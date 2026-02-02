@@ -19,6 +19,17 @@ public class Food {
     private Double price;
     private String image; // image của món ( có thể có từ 1-2 ảnh )
     private String description; // mô tả món
+    @Transient
+    private String priceFormatted;
+
+    public String getPriceFormatted() {
+        return priceFormatted;
+    }
+
+    public void setPriceFormatted(String priceFormatted) {
+        this.priceFormatted = priceFormatted;
+    }
+
 
     @ManyToOne
     @JoinColumn(name = "shop_id")

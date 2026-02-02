@@ -25,12 +25,21 @@
     </tr>
 
     <c:forEach items="${foods}" var="food">
-        <tr>
-            <td>${food.id}</td>
-            <td>${food.name}</td>
-            <td>${food.price} đ</td>
+        <tr style="cursor:pointer"
+            onclick="window.location='${pageContext.request.contextPath}/foods/${food.id}'">
+
+        <td>${food.id}</td>
             <td>
-                <img src="${food.image}" width="80">
+                <a href="${pageContext.request.contextPath}/foods/${food.id}" >
+                        ${food.name}
+                </a>
+            </td>
+
+            <td>${food.priceFormatted}
+                đ</td>
+            <td>
+                <img src="${pageContext.request.contextPath}${food.image}" width="80">
+
             </td>
             <td>${food.description}</td>
             <td>${food.shop.name}</td>
