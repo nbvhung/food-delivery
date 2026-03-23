@@ -20,10 +20,18 @@
       <span class="shipper-badge">SHIPPING</span>
     </div>
     <nav class="shipper-nav">
-      <a href="${pageContext.request.contextPath}/shipper/dashboard" class="tab">Tổng quan</a>
-      <a href="${pageContext.request.contextPath}/shipper/waiting" class="tab">Đơn chờ nhận</a>
-      <a href="${pageContext.request.contextPath}/shipper/delivering" class="tab active">Đang giao</a>
-      <a href="${pageContext.request.contextPath}/shipper/stats" class="tab">Thống kê</a>
+      <a href="${pageContext.request.contextPath}/shipper/dashboard" class="tab">
+        <i class="fas fa-chart-pie"></i><span class="nav-text">Tổng quan</span>
+      </a>
+      <a href="${pageContext.request.contextPath}/shipper/waiting" class="tab">
+        <i class="fas fa-box"></i><span class="nav-text">Đơn chờ nhận</span>
+      </a>
+      <a href="${pageContext.request.contextPath}/shipper/delivering" class="tab active">
+        <i class="fas fa-motorcycle"></i><span class="nav-text">Đang giao</span>
+      </a>
+      <a href="${pageContext.request.contextPath}/shipper/stats" class="tab">
+        <i class="fas fa-chart-line"></i><span class="nav-text">Thống kê</span>
+      </a>
     </nav>
   </div>
 

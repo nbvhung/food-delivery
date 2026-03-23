@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.NumberFormat;
@@ -74,7 +75,6 @@ public class ShipperController {
         List<Order> orders =
                 orderRepository.findByShipperIdAndStatus(currentUser.getId(), "SHIPPING");
         model.addAttribute("orders", orders);
-        model.addAttribute("shipperId", currentUser.getId());
         return "shipper/order-delivering";
     }
 
@@ -107,6 +107,48 @@ public class ShipperController {
         model.addAttribute("completedOrders", completedOrders);
 
         return "shipper/order-stats";
+    }
+
+
+    @GetMapping("/profile")
+    public String profile(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null || currentUser.getRole() != SHIPPER){
+            return "redirect:/login";
+        }
+
+        model.addAttribute("shipper", currentUser);
+        return "shipper/shipper-profile";
+    }
+
+    @PostMapping("/profile")
+    public String updateProfile (
+            @RequestParam(required = false) String avatar,
+            @RequestParam(required = false) String licensePlate,
+            HttpSession session,
+            RedirectAttributes ra
+    ){
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null || currentUser.getRole() != SHIPPER){
+            return "redirect:/login";
+        }
+
+        if (avatar != null && !avatar.isBlank()) {
+            currentUser.setAvatar(avatar.trim());
+        }
+
+        if (licensePlate != null && !licensePlate.isBlank()) {
+            String normalizedPlate = licensePlate.trim().toUpperCase();
+            if (!normalizedPlate.equalsIgnoreCase(Optional.ofNullable(currentUser.getLicensePlate()).orElse(""))
+                && !normalizedPlate.equalsIgnoreCase(Optional.ofNullable(currentUser.getPendingLicensePlate()).orElse(""))) {
+                currentUser.setPendingLicensePlate(normalizedPlate);
+                ra.addFlashAttribute("message", "pending_license_plate");
+            }
+        }
+
+        userRepository.save(currentUser);
+        session.setAttribute("currentUser", currentUser);
+        return "redirect:/shipper/profile";
     }
 
     @GetMapping("/register")

@@ -17,10 +17,18 @@
     <div class="shipper-header">
         <h2>Tổng quan công việc Shipper</h2>
         <nav class="shipper-nav">
-            <a href="${pageContext.request.contextPath}/shipper/dashboard" class="tab active">Tổng quan</a>
-            <a href="${pageContext.request.contextPath}/shipper/waiting" class="tab">Đơn chờ nhận</a>
-            <a href="${pageContext.request.contextPath}/shipper/delivering" class="tab">Đang giao</a>
-            <a href="${pageContext.request.contextPath}/shipper/stats" class="tab">Thống kê</a>
+            <a href="${pageContext.request.contextPath}/shipper/dashboard" class="tab active">
+                <i class="fas fa-chart-pie"></i><span class="nav-text">Tổng quan</span>
+            </a>
+            <a href="${pageContext.request.contextPath}/shipper/waiting" class="tab">
+                <i class="fas fa-box"></i><span class="nav-text">Đơn chờ nhận</span>
+            </a>
+            <a href="${pageContext.request.contextPath}/shipper/delivering" class="tab">
+                <i class="fas fa-motorcycle"></i><span class="nav-text">Đang giao</span>
+            </a>
+            <a href="${pageContext.request.contextPath}/shipper/stats" class="tab">
+                <i class="fas fa-chart-line"></i><span class="nav-text">Thống kê</span>
+            </a>
         </nav>
     </div>
 
@@ -50,10 +58,15 @@
                                     ${shipper.licensePlate}
                                 </c:when>
                                 <c:otherwise>
-                                    Chưa cập nhật biển số
+                                    Bạn chưa được duyệt biển số
                                 </c:otherwise>
                             </c:choose>
                         </span>
+                    </div>
+
+                    <div class="detail-item" style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4);">
+                        <i class="fas fa-circle" style="color: #10b981; font-size: 12px;"></i>
+                        <span style="color: #fff;">Đang hoạt động</span>
                     </div>
                 </div>
             </div>
@@ -61,74 +74,67 @@
     </div>
 
     <div class="shipper-card">
-        <h3 style="margin-top: 0;">Thống kê tổng quan</h3>
+        <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 20px; color: #333;">Thống kê tổng quan</h3>
+
         <div class="shipper-summary">
             <div class="summary-item">
-                <h3>Đơn chờ nhận</h3>
-                <p>${readyCount}</p>
-                <span class="summary-note">Sẵn sàng để nhận</span>
+                <div class="summary-icon" style="color: #3b82f6; background: #eff6ff;">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <div class="summary-info">
+                    <h3>Đơn chờ nhận</h3>
+                    <p>${readyCount}</p>
+                    <span class="summary-note">Sẵn sàng để nhận</span>
+                </div>
             </div>
+
             <div class="summary-item">
-                <h3>Đơn đang giao của tôi</h3>
-                <p>${deliveringCount}</p>
-                <span class="summary-note">Đang xử lý</span>
+                <div class="summary-icon" style="color: #10b981; background: #ecfdf5;">
+                    <i class="fas fa-motorcycle"></i>
+                </div>
+                <div class="summary-info">
+                    <h3>Đang giao của tôi</h3>
+                    <p>${deliveringCount}</p>
+                    <span class="summary-note">Đang xử lý</span>
+                </div>
             </div>
+
             <div class="summary-item">
-                <h3>Đơn đã giao thành công</h3>
-                <p>${deliveredCount}</p>
-                <span class="summary-note">Tích lũy đến hiện tại</span>
+                <div class="summary-icon" style="color: #8b5cf6; background: #f5f3ff;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="summary-info">
+                    <h3>Đã giao thành công</h3>
+                    <p>${deliveredCount}</p>
+                    <span class="summary-note">Tích lũy đến hiện tại</span>
+                </div>
             </div>
+
             <div class="summary-item">
-                <h3>Điểm đánh giá trung bình</h3>
-                <div class="rating" title="${avgRating}">
-                    <div class="rating-back">★★★★★</div>
-                    <div class="rating-front" style="width: ${avgRating * 20}%">★★★★★</div>
+                <div class="summary-icon" style="color: #f59e0b; background: #fffbeb;">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="summary-info">
+                    <h3>Điểm đánh giá</h3>
+                    <div class="rating" title="${avgRating}">
+                        <div class="rating-back">★★★★★</div>
+                        <div class="rating-front" style="width: ${avgRating * 20}%">★★★★★</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
-            <a href="${pageContext.request.contextPath}/shipper/waiting" class="shipper-action" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+        <div style="display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap;">
+            <a href="${pageContext.request.contextPath}/shipper/waiting" class="shipper-action" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px; padding: 10px 20px;">
                 <i class="fas fa-box"></i> Xem đơn chờ nhận
             </a>
-            <a href="${pageContext.request.contextPath}/shipper/delivering" class="shipper-action secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+            <a href="${pageContext.request.contextPath}/shipper/delivering" class="shipper-action secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px; padding: 10px 20px;">
                 <i class="fas fa-motorcycle"></i> Tiếp tục giao đơn
             </a>
+            <a href="${pageContext.request.contextPath}/shipper/profile" class="shipper-action" style="background: #3b82f6; text-decoration:none; display:inline-flex; align-items:center; gap:8px; padding: 10px 20px;">
+                <i class="fas fa-id-card"></i> Cập nhật avatar / biển số
+            </a>
         </div>
-    </div>
-
-    <div class="shipper-card">
-        <h3>Đơn đang giao gần đây</h3>
-        <c:choose>
-            <c:when test="${empty deliveringOrders}">
-                <div class="shipper-empty">Hiện bạn chưa có đơn đang giao.</div>
-            </c:when>
-            <c:otherwise>
-                <fmt:setLocale value="vi_VN"/>
-                <table class="shipper-table">
-                    <thead>
-                    <tr>
-                        <th>Mã đơn</th>
-                        <th>Khách hàng</th>
-                        <th>Địa chỉ</th>
-                        <th>Liên hệ</th>
-                        <th>Tổng tiền</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${deliveringOrders}" var="order">
-                        <tr>
-                            <td>#${order.id}</td>
-                            <td>${order.customer.fullName}</td>
-                            <td>${order.address}</td>
-                            <td>${order.phone}</td>
-                            <td><fmt:formatNumber value="${order.totalPrice}" type="number" groupingUsed="true" maxFractionDigits="0"/> đ</td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </c:otherwise>
-        </c:choose>
     </div>
 </div>
 
