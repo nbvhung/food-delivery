@@ -17,7 +17,6 @@
     color: #333;
 }
 
-
 .shipper-nav {
     display: inline-flex;
     background: #fff;
@@ -29,17 +28,44 @@
 
 /* tab */
 .shipper-nav .tab {
-    padding: 8px 18px;
+    padding: 10px; /* Thu nhỏ thành hình tròn khi ở trạng thái mặc định */
     border-radius: 999px;
     font-weight: 600;
     text-decoration: none;
     color: #ee4d2d;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    box-sizing: border-box;
 }
 
-/* hover */
-.shipper-nav .tab:hover {
-    background: #fff0ec;
+/* Cố định kích thước icon */
+.shipper-nav .tab i {
+    font-size: 16px;
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* 2. Ẩn chữ đi khi không di chuột */
+.shipper-nav .tab .nav-text {
+    max-width: 0;
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: all 0.7s ease;
+}
+
+.shipper-nav:hover .tab {
+    padding: 8px 18px; /* Mở rộng padding ngang */
+}
+
+.shipper-nav:hover .tab .nav-text {
+    max-width: 150px; /* Mở rộng chiều rộng để hiện chữ */
+    opacity: 1;
+    margin-left: 8px; /* Cách icon ra một chút */
 }
 
 /* active */
@@ -47,6 +73,13 @@
     background: #ee4d2d;
     color: #fff;
     box-shadow: 0 4px 10px rgba(238,77,45,0.4);
+    padding: 8px 18px;
+}
+
+.shipper-nav .tab.active .nav-text {
+    max-width: 150px;
+    opacity: 1;
+    margin-left: 8px;
 }
 
 .shipper-card {
@@ -292,5 +325,59 @@
     display: block;
     font-size: 13px;
     color: #888;
+    margin-top: 4px;
+}
+
+.shipper-summary .summary-item {
+    flex: 1;
+    min-width: 220px;
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex; /* Chuyển sang flexbox ngang */
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.shipper-summary .summary-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.summary-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+}
+
+.summary-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.shipper-summary .summary-item h3 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    color: #666;
+    font-weight: 600;
+}
+
+.shipper-summary .summary-item p {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: #333;
+}
+
+.shipper-summary .summary-item .rating {
+    font-size: 22px;
     margin-top: 4px;
 }

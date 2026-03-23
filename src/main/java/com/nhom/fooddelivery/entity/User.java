@@ -30,6 +30,7 @@ public class User {
     // Thông tin Shipper
     private String avatar; // Đường dẫn ảnh đại diện
     private String licensePlate; // Biển số xe
+    private String pendingLicensePlate; // Bien so xe cua shipper cho dc duyet
 
     // Một người dùng có thể đặt nhiều đơn hàng
     @OneToMany(mappedBy = "customer")
