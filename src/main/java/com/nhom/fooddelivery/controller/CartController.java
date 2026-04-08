@@ -82,14 +82,22 @@ public class CartController {
     @PostMapping("/cart/update")
     public String updateCart(@RequestParam Long foodId,
                              @RequestParam int quantity,
+                             @RequestParam(required = false) String action,
                              HttpSession session) {
 
         Map<Long, Integer> cart = getCart(session);
+        int nextQuantity = quantity;
 
-        if (quantity <= 0) {
+        if ("decrease".equals(action)) {
+            nextQuantity = quantity - 1;
+        } else if ("increase".equals(action)) {
+            nextQuantity = quantity + 1;
+        }
+
+        if (nextQuantity <= 0) {
             cart.remove(foodId); // số lượng <=0 thì xóa luôn
         } else {
-            cart.put(foodId, quantity);
+            cart.put(foodId, nextQuantity);
         }
         return "redirect:/cart";
     }
