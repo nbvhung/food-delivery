@@ -7,6 +7,7 @@
   <title>${food.name} - Mạnh Mall</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="<c:url value='/css/home.css'/>">
+  <link rel="stylesheet" href="<c:url value='/css/food.css'/>">
 </head>
 <body style="background-color: #f5f5f5;">
 <jsp:include page="/WEB-INF/views/layout/Header.jsp" />
@@ -20,6 +21,17 @@
       <h1>${food.name}</h1>
       <p class="detail-price">${food.price}đ</p>
       <p class="detail-description">${food.description}</p>
+
+<%--      <div class="detail-meta">--%>
+<%--        <span class="detail-pill">--%>
+<%--          <i class="fas fa-store"></i>--%>
+<%--          <a href="${pageContext.request.contextPath}/shops/${food.shop.id}">${food.shop.name}</a>--%>
+<%--        </span>--%>
+<%--        <span class="detail-pill">--%>
+<%--          <i class="fas fa-layer-group"></i>--%>
+<%--          ${food.category.name}--%>
+<%--        </span>--%>
+<%--      </div>--%>
 
       <form method="post" class="detail-actions">
         <input type="hidden" name="foodId" value="${food.id}">
@@ -38,6 +50,11 @@
           </button>
         </div>
       </form>
+
+      <a class="detail-back" href="${pageContext.request.contextPath}/">
+        <i class="fas fa-arrow-left"></i>
+        Quay lại
+      </a>
     </div>
   </div>
 </div>

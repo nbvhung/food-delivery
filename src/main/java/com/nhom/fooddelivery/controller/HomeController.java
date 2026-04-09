@@ -4,6 +4,8 @@ import com.nhom.fooddelivery.entity.Food;
 import com.nhom.fooddelivery.repository.FoodRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,9 @@ public class HomeController {
 
     @Autowired
     private FoodRepository foodRepository;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @GetMapping("/")
     public String index(Model model, HttpSession session,
@@ -64,6 +69,11 @@ public class HomeController {
         model.addAttribute("keyword", keyword); // Nhớ dòng này để giữ chữ trong ô Search
 
         // 3. Đẩy dữ liệu sang JSP
+        // Normalize image paths so /images/*.png resolves even if DB still has .jpg/.jpeg
+        for (Food food : foodPage.getContent()) {
+            food.setImage(normalizeImagePath(food.getImage()));
+        }
+
         model.addAttribute("foods", foodPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", foodPage.getTotalPages());
@@ -82,5 +92,28 @@ public class HomeController {
         model.addAttribute("cartCount", cartCount);
 
         return "index";
+    }
+
+    private String normalizeImagePath(String imagePath) {
+        if (imagePath == null || imagePath.isBlank()) {
+            return imagePath;
+        }
+        String webPath = imagePath.startsWith("/") ? imagePath : "/" + imagePath;
+        if (resourceExists(webPath)) {
+            return webPath;
+        }
+        String lower = webPath.toLowerCase();
+        if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) {
+            String pngPath = webPath.replaceAll("(?i)\\.jpe?g$", ".png");
+            if (resourceExists(pngPath)) {
+                return pngPath;
+            }
+        }
+        return webPath;
+    }
+
+    private boolean resourceExists(String webPath) {
+        Resource resource = resourceLoader.getResource("classpath:/static" + webPath);
+        return resource.exists();
     }
 }

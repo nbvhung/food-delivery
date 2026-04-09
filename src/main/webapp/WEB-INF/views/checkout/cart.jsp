@@ -33,9 +33,9 @@
                         <div class="cart-qty">
                             <form action="${pageContext.request.contextPath}/cart/update" method="post" class="qty-form">
                                 <input type="hidden" name="foodId" value="${item.food.id}">
-                                <button type="submit" name="quantity" value="${item.quantity - 1}" class="qty-btn">−</button>
+                                <button type="submit" name="action" value="decrease" class="qty-btn">−</button>
                                 <input type="number" name="quantity" value="${item.quantity}" min="1" class="qty-input">
-                                <button type="submit" name="quantity" value="${item.quantity + 1}" class="qty-btn">+</button>
+                                <button type="submit" name="action" value="increase" class="qty-btn">+</button>
                             </form>
                         </div>
 
