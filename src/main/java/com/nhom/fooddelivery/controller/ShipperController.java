@@ -1,8 +1,10 @@
 package com.nhom.fooddelivery.controller;
 
 import com.nhom.fooddelivery.entity.Order;
+import com.nhom.fooddelivery.entity.Shipper;
 import com.nhom.fooddelivery.entity.User;
 import com.nhom.fooddelivery.repository.OrderRepository;
+import com.nhom.fooddelivery.repository.ShipperRepository;
 import com.nhom.fooddelivery.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,10 @@ public class ShipperController {
     @Autowired
     private UserRepository userRepository;
 
+    // TIÊM THÊM SHIPPER REPOSITORY VÀO ĐÂY
+    @Autowired
+    private ShipperRepository shipperRepository;
+
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
         User currentUser = (User) session.getAttribute("currentUser");
@@ -48,12 +54,16 @@ public class ShipperController {
         Long deliveredCount =orderRepository.countByShipperIdAndStatus(currentUser.getId(), "DELIVERED");
         Double avgRating = Optional.ofNullable(orderRepository.getAverageRatingByShipper(currentUser.getId())).orElse(0.0);
 
+        Shipper shipperProfile = shipperRepository.findByUserId(currentUser.getId());
+
         model.addAttribute("readyCount", readyCount);
         model.addAttribute("deliveringCount", deliveringCount);
         model.addAttribute("deliveredCount", deliveredCount);
         model.addAttribute("avgRating", avgRating);
         model.addAttribute("deliveringOrders", deliveringOrders);
         model.addAttribute("shipper", currentUser);
+
+        model.addAttribute("shipperProfile", shipperProfile);
         return "shipper/shipper-dashboard";
     }
 
@@ -76,8 +86,7 @@ public class ShipperController {
             return "redirect:/login";
         }
 
-        List<Order> orders =
-                orderRepository.findByShipperIdAndStatus(currentUser.getId(), "SHIPPING");
+        List<Order> orders = orderRepository.findByShipperIdAndStatus(currentUser.getId(), "SHIPPING");
         model.addAttribute("orders", orders);
         return "shipper/order-delivering";
     }
@@ -89,19 +98,11 @@ public class ShipperController {
             return "redirect:/login";
         }
 
-        Long deliveredCount =
-                orderRepository.countByShipperIdAndStatus(currentUser.getId(), "DELIVERED");
+        Long deliveredCount = orderRepository.countByShipperIdAndStatus(currentUser.getId(), "DELIVERED");
+        Double totalEarnings = Optional.ofNullable(orderRepository.sumEarningsByShipper(currentUser.getId())).orElse(0.0);
+        Double avgRating = Optional.ofNullable(orderRepository.getAverageRatingByShipper(currentUser.getId())).orElse(0.0);
+        List<Order> completedOrders = orderRepository.findByShipperIdAndStatus(currentUser.getId(), "DELIVERED");
 
-        Double totalEarnings =
-                Optional.ofNullable(orderRepository.sumEarningsByShipper(currentUser.getId())).orElse(0.0);
-
-        Double avgRating =
-                Optional.ofNullable(orderRepository.getAverageRatingByShipper(currentUser.getId())).orElse(0.0);
-
-        List<Order> completedOrders =
-                orderRepository.findByShipperIdAndStatus(currentUser.getId(), "DELIVERED");
-
-        // Format giá tiền VN
         NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
         String totalEarningsStr = nf.format(totalEarnings);
 
@@ -114,25 +115,94 @@ public class ShipperController {
     }
 
 
+    @GetMapping("/profile")
+    public String profile(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null || currentUser.getRole() != SHIPPER){
+            return "redirect:/login";
+        }
+
+        // LẤY THÊM HỒ SƠ SHIPPER ĐỂ HIỂN THỊ BIỂN SỐ XE LÊN GIAO DIỆN
+        Shipper shipperProfile = shipperRepository.findByUserId(currentUser.getId());
+
+        model.addAttribute("shipper", currentUser); // Dữ liệu User (Tên, SDT, Avatar)
+        model.addAttribute("shipperProfile", shipperProfile); // Dữ liệu Shipper (Biển số xe, Loại xe)
+
+        return "shipper/shipper-profile";
+    }
+
+    @PostMapping("/profile")
+    public String updateProfile (
+            @RequestParam(required = false) String avatar,
+            @RequestParam(required = false) String licensePlate,
+            HttpSession session,
+            RedirectAttributes ra
+    ){
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null || currentUser.getRole() != SHIPPER){
+            return "redirect:/login";
+        }
+
+        // 1. Cập nhật Avatar (Vẫn lưu ở bảng User)
+        if (avatar != null && !avatar.isBlank()) {
+            currentUser.setAvatar(avatar.trim());
+            userRepository.save(currentUser);
+            session.setAttribute("currentUser", currentUser);
+        }
+
+        // 2. Cập nhật Biển số xe (Lưu sang bảng Shipper)
+        if (licensePlate != null && !licensePlate.isBlank()) {
+            String normalizedPlate = licensePlate.trim().toUpperCase();
+            Shipper shipperProfile = shipperRepository.findByUserId(currentUser.getId());
+
+            if (shipperProfile != null && !normalizedPlate.equalsIgnoreCase(shipperProfile.getLicensePlate())) {
+
+                // Ở đây mình cập nhật trực tiếp biển số xe luôn.
+                // Nếu Hùng muốn duyệt biển số xe (pendingLicensePlate) thì cần thêm trường đó vào Entity Shipper nhé!
+                shipperProfile.setLicensePlate(normalizedPlate);
+                shipperRepository.save(shipperProfile);
+
+                ra.addFlashAttribute("message", "update_profile_success");
+            }
+        }
+
+        return "redirect:/shipper/profile";
+    }
+
     @GetMapping("/register")
     public String showShipperRegister(HttpSession session) {
         User user = (User) session.getAttribute("currentUser");
         if (user == null) return "redirect:/login";
 
-        // Nếu đã là Shipper rồi thì không cần đăng ký nữa
-        if (user.getRole() == SHIPPER) return "redirect:/";
+        if ("SHIPPER".equals(user.getRole().name())) return "redirect:/";
 
         return "shipper/shipper-register";
     }
 
-    //  Xử lý gửi yêu cầu
     @PostMapping("/register")
-    public String processShipperRegister(HttpSession session, RedirectAttributes ra) {
+    public String processShipperRegister(
+            @RequestParam("phone") String phone,
+            @RequestParam("licensePlate") String licensePlate,
+            @RequestParam("vehicleType") String vehicleType,
+            HttpSession session,
+            RedirectAttributes ra) {
+
         User currentUser = (User) session.getAttribute("currentUser");
+
         if (currentUser != null) {
+            currentUser.setPhone(phone);
             currentUser.setStatus("PENDING_SHIPPER");
             userRepository.save(currentUser);
+
+            Shipper newShipper = new Shipper();
+            newShipper.setUser(currentUser);
+            newShipper.setLicensePlate(licensePlate);
+            newShipper.setVehicleType(vehicleType);
+            shipperRepository.save(newShipper);
+
             ra.addFlashAttribute("message", "pending_shipper");
+            // Cập nhật lại session để giao diện đổi ngay trạng thái
+            session.setAttribute("currentUser", currentUser);
         }
         return "redirect:/";
     }

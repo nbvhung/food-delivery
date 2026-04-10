@@ -27,10 +27,10 @@ public class User {
     //ACTIVED, BANNED, PENDING_MERCHANT, PENDING_SHIPPER
     private String status = "ACTIVED";
 
-    // Thông tin Shipper
     private String avatar; // Đường dẫn ảnh đại diện
-    private String licensePlate; // Biển số xe
-    private String pendingLicensePlate; // Bien so xe cua shipper cho dc duyet
+
+    @Column(length = 15) // Giới hạn độ dài cho chuẩn SĐT
+    private String phone;
 
     // Một người dùng có thể đặt nhiều đơn hàng
     @OneToMany(mappedBy = "customer")
