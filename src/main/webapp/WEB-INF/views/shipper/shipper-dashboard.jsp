@@ -15,7 +15,7 @@
 
 <div class="shipper-container">
     <div class="shipper-header">
-        <h2>Tổng quan công việc Shipper</h2>
+        <h2>Tổng quan</h2>
         <nav class="shipper-nav">
             <a href="${pageContext.request.contextPath}/shipper/dashboard" class="tab active">
                 <i class="fas fa-chart-pie"></i><span class="nav-text">Tổng quan</span>
@@ -32,20 +32,34 @@
         </nav>
     </div>
 
-    <!-- Shipper Profile Card -->
     <div class="shipper-card shipper-profile-card">
         <div class="shipper-profile">
-            <div class="shipper-avatar">
-                <c:choose>
-                    <c:when test="${not empty shipper.avatar}">
-                        <img src="${pageContext.request.contextPath}${shipper.avatar}" alt="${shipper.fullName}">
-                    </c:when>
-                    <c:otherwise>
-                        <div class="avatar-placeholder">
-                            <i class="fas fa-user"></i>
+            <div class="shipper-avatar" style="position: relative; width: 110px; height: 110px; flex-shrink: 0;">
+
+                <form action="${pageContext.request.contextPath}/shipper/update-avatar" method="POST" enctype="multipart/form-data" style="margin: 0; width: 100%; height: 100%;">
+
+                    <label style="cursor: pointer; display: block; width: 100%; height: 100%; margin: 0;">
+
+                        <c:choose>
+                            <c:when test="${not empty shipper.avatar}">
+                                <img src="${pageContext.request.contextPath}${shipper.avatar}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid #e5e7eb;">
+                            </c:when>
+                            <c:otherwise>
+                                <div class="avatar-placeholder" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: #f3f4f6; border: 3px solid #e5e7eb;">
+                                    <i class="fas fa-user" style="font-size: 40px; color: #9ca3af;"></i>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <div style="position: absolute; bottom: 0; right: 0; background: #fff; color: #666; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+                            <i class="fas fa-camera" style="font-size: 14px;"></i>
                         </div>
-                    </c:otherwise>
-                </c:choose>
+
+                        <input type="file" name="avatarFile" accept="image/png, image/jpeg, image/jpg" style="display: none;"
+                               onchange="if(confirm('Bạn có chắc chắn muốn cập nhật ảnh đại diện này không?')) { this.form.submit(); } else { this.value = ''; }">
+
+                    </label>
+                </form>
             </div>
             <div class="shipper-info">
                 <h3>${shipper.fullName}</h3>
@@ -122,18 +136,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div style="display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap;">
-            <a href="${pageContext.request.contextPath}/shipper/waiting" class="shipper-action" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px; padding: 10px 20px;">
-                <i class="fas fa-box"></i> Xem đơn chờ nhận
-            </a>
-            <a href="${pageContext.request.contextPath}/shipper/delivering" class="shipper-action secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px; padding: 10px 20px;">
-                <i class="fas fa-motorcycle"></i> Tiếp tục giao đơn
-            </a>
-            <a href="${pageContext.request.contextPath}/shipper/profile" class="shipper-action" style="background: #3b82f6; text-decoration:none; display:inline-flex; align-items:center; gap:8px; padding: 10px 20px;">
-                <i class="fas fa-id-card"></i> Cập nhật avatar / biển số
-            </a>
         </div>
     </div>
 </div>

@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -201,5 +205,28 @@ public class ShipperController {
             session.setAttribute("currentUser", currentUser);
         }
         return "redirect:/";
+    }
+
+    @PostMapping("/update-avatar")
+    public String quickUpdateAvatar(@RequestParam("avatarFile") MultipartFile file, HttpSession session) {
+        User currentUser = (User) session.getAttribute("currentUser");
+
+        if (currentUser != null && !file.isEmpty()) {
+            try {
+                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename().replaceAll("\\s+", "");
+                Path uploadPath = Paths.get("src/main/resources/static/images/");
+                if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
+
+                Files.copy(file.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+
+                currentUser.setAvatar("/images/" + fileName);
+                userRepository.save(currentUser);
+                session.setAttribute("currentUser", currentUser);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "redirect:/shipper/dashboard";
     }
 }

@@ -24,9 +24,21 @@
 
                     <c:otherwise>
                         <span style="margin: 0 5px;">|</span>
-                        <span class="user-info" style="font-weight: bold; color: white;">
-                            <i class="fas fa-user-circle"></i> ${sessionScope.currentUser.fullName}
-                        </span>
+                        <c:choose>
+                            <c:when test="${sessionScope.currentUser.role == 'SHIPPER'}">
+                                <a href="${pageContext.request.contextPath}/shipper/dashboard"
+                                   class="user-info"
+                                   style="font-weight: bold; color: white; text-decoration: none;">
+                                    <i class="fas fa-user-circle"></i> ${sessionScope.currentUser.fullName}
+                                </a>
+                            </c:when>
+
+                            <c:otherwise>
+                                <span class="user-info" style="font-weight: bold; color: white;">
+                                    <i class="fas fa-user-circle"></i> ${sessionScope.currentUser.fullName}
+                                </span>
+                            </c:otherwise>
+                        </c:choose>
                         <span style="margin: 0 5px;">|</span>
                         <a href="${pageContext.request.contextPath}/logout"
                            onclick="return confirm('Bạn có muốn đăng xuất?')"
