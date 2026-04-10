@@ -34,9 +34,19 @@
                             </c:when>
 
                             <c:otherwise>
-                                <span class="user-info" style="font-weight: bold; color: white;">
-                                    <i class="fas fa-user-circle"></i> ${sessionScope.currentUser.fullName}
-                                </span>
+                                <a href="${pageContext.request.contextPath}/profile" class="text-white text-decoration-none d-flex align-items-center">
+                                    <c:choose>
+                                        <c:when test="${not empty currentUser.avatar}">
+                                            <img src="${pageContext.request.contextPath}${currentUser.avatar}"
+                                                 class="rounded-circle me-1 border border-white"
+                                                 style="width: 25px; height: 25px; object-fit: cover; border-radius: 50%">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i class="fas fa-user-circle fs-5 me-1"></i>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <span class="fw-bold">${currentUser.fullName}</span>
+                                </a>
                             </c:otherwise>
                         </c:choose>
                         <span style="margin: 0 5px;">|</span>

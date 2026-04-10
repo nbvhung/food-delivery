@@ -16,11 +16,9 @@
             </div>
         </div>
         <div class="footer-company-info">
-            <p>Công ty TNHH 1 mk tao</p>
-            <p>Địa chỉ: Tầng 4, p404, số 1 ngõ 121 Ngô Thỳ Sỹ, Phường Vạn Phúc, Quận Hà Đông, Thành phố Hà Nội, Việt Nam. Tổng đài hỗ trợ: 0972195705 - Email: bmanh812205@gmail.com</p>
-            <p>Chịu Trách Nhiệm Quản Lý Nội Dung: Nguyễn Việt Hùng - Điện thoại liên hệ: 039 9706485 (ext 4678)</p>
-            <p>Mã số doanh nghiệp: 123456 do Sở Kế hoạch & Đầu tư TP Hà Nội cấp lần đầu ngày 1/1/2026</p>
-            <p>© 2026 - Bản quyền thuộc về Công ty TNHH 1 mk t</p>
+            <p>Công ty TNHH 5 thành viên</p>
+            <p>Địa chỉ: Tầng 4, p404, số 1 ngõ 121 Ngô Thì Sỹ, Phường Vạn Phúc, Quận Hà Đông, Thành phố Hà Nội, Việt Nam. Tổng đài hỗ trợ: 0972195705 - Email: bmanh812205@gmail.com</p>
+            <p>© 2026 - Bản quyền thuộc về Mạnh Mall</p>
         </div>
     </div>
 </footer>

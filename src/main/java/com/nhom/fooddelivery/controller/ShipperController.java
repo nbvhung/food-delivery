@@ -157,8 +157,6 @@ public class ShipperController {
 
             if (shipperProfile != null && !normalizedPlate.equalsIgnoreCase(shipperProfile.getLicensePlate())) {
 
-                // Ở đây mình cập nhật trực tiếp biển số xe luôn.
-                // Nếu Hùng muốn duyệt biển số xe (pendingLicensePlate) thì cần thêm trường đó vào Entity Shipper nhé!
                 shipperProfile.setLicensePlate(normalizedPlate);
                 shipperRepository.save(shipperProfile);
 
