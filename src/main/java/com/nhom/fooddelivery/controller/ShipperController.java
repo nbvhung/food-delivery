@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -110,47 +114,6 @@ public class ShipperController {
     }
 
 
-    @GetMapping("/profile")
-    public String profile(HttpSession session, Model model) {
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser == null || currentUser.getRole() != SHIPPER){
-            return "redirect:/login";
-        }
-
-        model.addAttribute("shipper", currentUser);
-        return "shipper/shipper-profile";
-    }
-
-    @PostMapping("/profile")
-    public String updateProfile (
-            @RequestParam(required = false) String avatar,
-            @RequestParam(required = false) String licensePlate,
-            HttpSession session,
-            RedirectAttributes ra
-    ){
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser == null || currentUser.getRole() != SHIPPER){
-            return "redirect:/login";
-        }
-
-        if (avatar != null && !avatar.isBlank()) {
-            currentUser.setAvatar(avatar.trim());
-        }
-
-        if (licensePlate != null && !licensePlate.isBlank()) {
-            String normalizedPlate = licensePlate.trim().toUpperCase();
-            if (!normalizedPlate.equalsIgnoreCase(Optional.ofNullable(currentUser.getLicensePlate()).orElse(""))
-                && !normalizedPlate.equalsIgnoreCase(Optional.ofNullable(currentUser.getPendingLicensePlate()).orElse(""))) {
-                currentUser.setPendingLicensePlate(normalizedPlate);
-                ra.addFlashAttribute("message", "pending_license_plate");
-            }
-        }
-
-        userRepository.save(currentUser);
-        session.setAttribute("currentUser", currentUser);
-        return "redirect:/shipper/profile";
-    }
-
     @GetMapping("/register")
     public String showShipperRegister(HttpSession session) {
         User user = (User) session.getAttribute("currentUser");
@@ -172,5 +135,28 @@ public class ShipperController {
             ra.addFlashAttribute("message", "pending_shipper");
         }
         return "redirect:/";
+    }
+
+    @PostMapping("/update-avatar")
+    public String quickUpdateAvatar(@RequestParam("avatarFile") MultipartFile file, HttpSession session) {
+        User currentUser = (User) session.getAttribute("currentUser");
+
+        if (currentUser != null && !file.isEmpty()) {
+            try {
+                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename().replaceAll("\\s+", "");
+                Path uploadPath = Paths.get("src/main/resources/static/images/");
+                if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
+
+                Files.copy(file.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+
+                currentUser.setAvatar("/images/" + fileName);
+                userRepository.save(currentUser);
+                session.setAttribute("currentUser", currentUser);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "redirect:/shipper/dashboard";
     }
 }
