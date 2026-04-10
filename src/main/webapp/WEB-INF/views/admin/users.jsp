@@ -91,8 +91,13 @@
 
                                 <c:if test="${u.status == 'PENDING_SHIPPER'}">
                                     <a href="${pageContext.request.contextPath}/admin/users/approve-shipper/${u.id}"
-                                       class="btn btn-sm btn-info text-white" title="Duyệt làm Tài xế">
-                                        <i class="fas fa-motorcycle"></i>
+                                       class="btn btn-sm btn-success text-white" title="Duyệt làm Tài xế">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                    <a href="${pageContext.request.contextPath}/admin/users/reject-shipper/${u.id}"
+                                       class="btn btn-sm btn-danger text-white" title="Từ chối yêu cầu"
+                                       onclick="return confirm('Bạn có chắc muốn từ chối hồ sơ này?');">
+                                        <i class="fas fa-times"></i>
                                     </a>
                                 </c:if>
                             </div>

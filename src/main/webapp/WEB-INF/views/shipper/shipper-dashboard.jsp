@@ -54,8 +54,8 @@
                         <i class="fas fa-motorcycle"></i>
                         <span>
                             <c:choose>
-                                <c:when test="${not empty shipper.licensePlate}">
-                                    ${shipper.licensePlate}
+                                <c:when test="${not empty shipperProfile.licensePlate}">
+                                    ${shipperProfile.licensePlate}
                                 </c:when>
                                 <c:otherwise>
                                     Bạn chưa được duyệt biển số
