@@ -11,6 +11,7 @@ import java.util.Arrays;
 @Component
 public class DataSeeder implements CommandLineRunner {
     @Autowired private UserRepository userRepo;
+    @Autowired private ShipperRepository shipperRepo;
     @Autowired private ShopRepository shopRepo;
     @Autowired private CategoryRepository categoryRepo;
     @Autowired private FoodRepository foodRepo;
@@ -56,6 +57,12 @@ public class DataSeeder implements CommandLineRunner {
         shipper.setFullName("Nguyễn Văn B");
         shipper.setRole(UserRole.SHIPPER);
         userRepo.save(shipper);
+
+        Shipper shipperProfile = new Shipper();
+        shipperProfile.setUser(shipper);
+        shipperProfile.setLicensePlate("34F1-01234");
+        shipperProfile.setVehicleType("Honda Wave");
+        shipperRepo.save(shipperProfile);
 
         // 3. Tạo Danh mục (Category)
         Category categoryRice = new Category(); categoryRice.setName("Cơm");

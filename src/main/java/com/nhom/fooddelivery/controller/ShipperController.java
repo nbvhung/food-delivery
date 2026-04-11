@@ -168,11 +168,19 @@ public class ShipperController {
     }
 
     @GetMapping("/register")
-    public String showShipperRegister(HttpSession session) {
+    public String showShipperRegister(HttpSession session, Model model) {
         User user = (User) session.getAttribute("currentUser");
         if (user == null) return "redirect:/login";
 
-        if ("SHIPPER".equals(user.getRole().name())) return "redirect:/";
+        // Nếu đã là SHIPPER thì vào thẳng dashboard
+        if (user.getRole() != null && "SHIPPER".equals(user.getRole().name())) {
+            return "redirect:/shipper/dashboard";
+        }
+
+        // Nếu status là PENDING_SHIPPER thì hiện trang thông báo
+        if ("PENDING_SHIPPER".equals(user.getStatus())) {
+            return "/shipper/shipper-pending";
+        }
 
         return "shipper/shipper-register";
     }
@@ -203,6 +211,54 @@ public class ShipperController {
             session.setAttribute("currentUser", currentUser);
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/register/review")
+    public String reviewShipperRegister(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("currentUser");
+
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        Shipper shipperProfile = shipperRepository.findByUserId(currentUser.getId());
+
+        if (shipperProfile == null) {
+            return "redirect:/shipper/register";
+        }
+
+        model.addAttribute("user", currentUser);
+        model.addAttribute("shipperProfile", shipperProfile);
+
+        return "shipper/shipper-register-review";
+    }
+
+    @PostMapping("/register/modify")
+    public String modifyShipperRegisterForm(
+            @RequestParam("phone") String phone,
+            @RequestParam("licensePlate") String licensePlate,
+            @RequestParam("vehicleType") String vehicleType,
+            HttpSession session,
+            RedirectAttributes ra
+    ) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        Shipper shipper = shipperRepository.findByUserId(currentUser.getId());
+        if (shipper == null) {
+            return "redirect:/shipper/register";
+        }
+
+        currentUser.setPhone(phone.trim());
+        userRepository.save(currentUser);
+
+        shipper.setLicensePlate(licensePlate.trim().toUpperCase());
+        shipper.setVehicleType(vehicleType);
+        shipperRepository.save(shipper);
+
+        ra.addFlashAttribute("message", "update_shipper_success");
+        return "redirect:/shipper/register/review";
     }
 
     @PostMapping("/update-avatar")
