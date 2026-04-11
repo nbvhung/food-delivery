@@ -1,0 +1,24 @@
+.profile-page .profile-container {
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+.profile-page .avatar-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #EE4D2D; /* Đổi màu xanh sang màu cam Shopee cho đồng bộ */
+    padding: 3px;
+}
+
+/* Đảm bảo chữ trên nút bấm luôn là màu trắng */
+.profile-page .btn-submit {
+    background-color: #EE4D2D;
+    color: white !important;
+}
+
+.profile-page .btn-submit:hover {
+    background-color: #d73211;
+    color: white !important;
+}

@@ -114,6 +114,59 @@ public class ShipperController {
         return "shipper/order-stats";
     }
 
+
+    @GetMapping("/profile")
+    public String profile(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null || currentUser.getRole() != SHIPPER){
+            return "redirect:/login";
+        }
+
+        // LẤY THÊM HỒ SƠ SHIPPER ĐỂ HIỂN THỊ BIỂN SỐ XE LÊN GIAO DIỆN
+        Shipper shipperProfile = shipperRepository.findByUserId(currentUser.getId());
+
+        model.addAttribute("shipper", currentUser); // Dữ liệu User (Tên, SDT, Avatar)
+        model.addAttribute("shipperProfile", shipperProfile); // Dữ liệu Shipper (Biển số xe, Loại xe)
+
+        return "shipper/shipper-profile";
+    }
+
+    @PostMapping("/profile")
+    public String updateProfile (
+            @RequestParam(required = false) String avatar,
+            @RequestParam(required = false) String licensePlate,
+            HttpSession session,
+            RedirectAttributes ra
+    ){
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null || currentUser.getRole() != SHIPPER){
+            return "redirect:/login";
+        }
+
+        // 1. Cập nhật Avatar (Vẫn lưu ở bảng User)
+        if (avatar != null && !avatar.isBlank()) {
+            currentUser.setAvatar(avatar.trim());
+            userRepository.save(currentUser);
+            session.setAttribute("currentUser", currentUser);
+        }
+
+        // 2. Cập nhật Biển số xe (Lưu sang bảng Shipper)
+        if (licensePlate != null && !licensePlate.isBlank()) {
+            String normalizedPlate = licensePlate.trim().toUpperCase();
+            Shipper shipperProfile = shipperRepository.findByUserId(currentUser.getId());
+
+            if (shipperProfile != null && !normalizedPlate.equalsIgnoreCase(shipperProfile.getLicensePlate())) {
+
+                shipperProfile.setLicensePlate(normalizedPlate);
+                shipperRepository.save(shipperProfile);
+
+                ra.addFlashAttribute("message", "update_profile_success");
+            }
+        }
+
+        return "redirect:/shipper/profile";
+    }
+
     @GetMapping("/register")
     public String showShipperRegister(HttpSession session, Model model) {
         User user = (User) session.getAttribute("currentUser");
