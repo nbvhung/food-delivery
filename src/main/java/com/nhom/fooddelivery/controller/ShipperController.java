@@ -114,23 +114,6 @@ public class ShipperController {
         return "shipper/order-stats";
     }
 
-
-    @GetMapping("/profile")
-    public String profile(HttpSession session, Model model) {
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser == null || currentUser.getRole() != SHIPPER){
-            return "redirect:/login";
-        }
-
-        // LẤY THÊM HỒ SƠ SHIPPER ĐỂ HIỂN THỊ BIỂN SỐ XE LÊN GIAO DIỆN
-        Shipper shipperProfile = shipperRepository.findByUserId(currentUser.getId());
-
-        model.addAttribute("shipper", currentUser); // Dữ liệu User (Tên, SDT, Avatar)
-        model.addAttribute("shipperProfile", shipperProfile); // Dữ liệu Shipper (Biển số xe, Loại xe)
-
-        return "shipper/shipper-profile";
-    }
-
     @GetMapping("/register")
     public String showShipperRegister(HttpSession session, Model model) {
         User user = (User) session.getAttribute("currentUser");
@@ -175,6 +158,54 @@ public class ShipperController {
             session.setAttribute("currentUser", currentUser);
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/register/review")
+    public String reviewShipperRegister(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("currentUser");
+
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        Shipper shipperProfile = shipperRepository.findByUserId(currentUser.getId());
+
+        if (shipperProfile == null) {
+            return "redirect:/shipper/register";
+        }
+
+        model.addAttribute("user", currentUser);
+        model.addAttribute("shipperProfile", shipperProfile);
+
+        return "shipper/shipper-register-review";
+    }
+
+    @PostMapping("/register/modify")
+    public String modifyShipperRegisterForm(
+            @RequestParam("phone") String phone,
+            @RequestParam("licensePlate") String licensePlate,
+            @RequestParam("vehicleType") String vehicleType,
+            HttpSession session,
+            RedirectAttributes ra
+    ) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        Shipper shipper = shipperRepository.findByUserId(currentUser.getId());
+        if (shipper == null) {
+            return "redirect:/shipper/register";
+        }
+
+        currentUser.setPhone(phone.trim());
+        userRepository.save(currentUser);
+
+        shipper.setLicensePlate(licensePlate.trim().toUpperCase());
+        shipper.setVehicleType(vehicleType);
+        shipperRepository.save(shipper);
+
+        ra.addFlashAttribute("message", "update_shipper_success");
+        return "redirect:/shipper/register/review";
     }
 
     @PostMapping("/update-avatar")
