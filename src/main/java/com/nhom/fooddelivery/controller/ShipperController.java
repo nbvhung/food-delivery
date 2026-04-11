@@ -131,50 +131,20 @@ public class ShipperController {
         return "shipper/shipper-profile";
     }
 
-    @PostMapping("/profile")
-    public String updateProfile (
-            @RequestParam(required = false) String avatar,
-            @RequestParam(required = false) String licensePlate,
-            HttpSession session,
-            RedirectAttributes ra
-    ){
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser == null || currentUser.getRole() != SHIPPER){
-            return "redirect:/login";
-        }
-
-        // 1. Cập nhật Avatar (Vẫn lưu ở bảng User)
-        if (avatar != null && !avatar.isBlank()) {
-            currentUser.setAvatar(avatar.trim());
-            userRepository.save(currentUser);
-            session.setAttribute("currentUser", currentUser);
-        }
-
-        // 2. Cập nhật Biển số xe (Lưu sang bảng Shipper)
-        if (licensePlate != null && !licensePlate.isBlank()) {
-            String normalizedPlate = licensePlate.trim().toUpperCase();
-            Shipper shipperProfile = shipperRepository.findByUserId(currentUser.getId());
-
-            if (shipperProfile != null && !normalizedPlate.equalsIgnoreCase(shipperProfile.getLicensePlate())) {
-
-                // Ở đây mình cập nhật trực tiếp biển số xe luôn.
-                // Nếu Hùng muốn duyệt biển số xe (pendingLicensePlate) thì cần thêm trường đó vào Entity Shipper nhé!
-                shipperProfile.setLicensePlate(normalizedPlate);
-                shipperRepository.save(shipperProfile);
-
-                ra.addFlashAttribute("message", "update_profile_success");
-            }
-        }
-
-        return "redirect:/shipper/profile";
-    }
-
     @GetMapping("/register")
-    public String showShipperRegister(HttpSession session) {
+    public String showShipperRegister(HttpSession session, Model model) {
         User user = (User) session.getAttribute("currentUser");
         if (user == null) return "redirect:/login";
 
-        if ("SHIPPER".equals(user.getRole().name())) return "redirect:/";
+        // Nếu đã là SHIPPER thì vào thẳng dashboard
+        if (user.getRole() != null && "SHIPPER".equals(user.getRole().name())) {
+            return "redirect:/shipper/dashboard";
+        }
+
+        // Nếu status là PENDING_SHIPPER thì hiện trang thông báo
+        if ("PENDING_SHIPPER".equals(user.getStatus())) {
+            return "/shipper/shipper-pending";
+        }
 
         return "shipper/shipper-register";
     }
