@@ -298,6 +298,50 @@ body {
     margin-top: auto;
 }
 
+/* --- BẮT ĐẦU CSS PHÂN TRANG --- */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 40px 0;
+    padding: 0;
+}
+
+.pagination .page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 15px;
+    background-color: #fff;
+    color: #555;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.25s ease-in-out;
+}
+
+.pagination .page-btn:hover:not(.active) {
+    border-color: #ee4d2d;
+    color: #ee4d2d;
+    background-color: #fdf5f4;
+}
+
+.pagination .page-btn.active {
+    background-color: #ee4d2d;
+    border-color: #ee4d2d;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(238, 77, 45, 0.25);
+    cursor: default;
+}
+
+/* --- PHÂN TRANG --- */
+
 /* =========================================
    6. FOOTER
    ========================================= */

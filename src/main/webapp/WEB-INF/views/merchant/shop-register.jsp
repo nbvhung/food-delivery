@@ -74,7 +74,7 @@
 
                         <div class="d-flex justify-content-end gap-2 mt-4">
                             <a href="<c:url value='/shops'/>" class="btn btn-light border">Hủy</a>
-                            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                            <button type="submit" class="btn border" style="background-color: #ee4d2d; color:white;">Gửi yêu cầu</button>
                         </div>
                     </form>
                 </div>

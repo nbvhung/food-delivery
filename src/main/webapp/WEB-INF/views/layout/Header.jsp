@@ -11,7 +11,7 @@
                 <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i>
             </div>
             <div class="navbar-right">
-                <a href="#"><i class="fas fa-bell"></i> Thông báo</a>
+                <a href="${pageContext.request.contextPath}/checkout/orders"><i class="fa-solid fa-ticket"></i>Đơn hàng</a>
                 <a href="#"><i class="fas fa-question-circle"></i> Hỗ trợ</a>
                 <a href="#"><i class="fas fa-globe"></i> Tiếng Việt</a>
                 <c:choose>

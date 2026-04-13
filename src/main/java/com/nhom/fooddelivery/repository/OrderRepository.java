@@ -55,4 +55,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // Điểm đánh giá trung bình
     @Query("SELECT AVG(o.shipperRating) FROM Order o WHERE o.shipper.id = :shipperId AND o.shipperRating IS NOT NULL")
     Double getAverageRatingByShipper(@Param("shipperId") Long shipperId);
+
+    @Query("SELECT COALESCE(SUM(o.totalPrice), 0) FROM Order o WHERE o.status = 'DELIVERED'")
+    Double getTotalSystemRevenue();
+
+    @Query("SELECT o.shop.name, SUM(o.totalPrice), o.shop.owner.fullName " +
+            "FROM Order o WHERE o.status = 'DELIVERED' GROUP BY o.shop.id, o.shop.name, o.shop.owner.fullName")
+    List<Object[]> getRevenueReportByShop();
 }
