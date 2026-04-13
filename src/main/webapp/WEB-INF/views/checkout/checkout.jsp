@@ -17,12 +17,23 @@
 <div class="container checkout-container">
     <h2>Xác nhận đơn hàng</h2>
 
+    <div class="cart-actions" style="margin-top: 0; margin-bottom: 18px; justify-content: flex-start;">
+        <a class="btn-primary" href="${pageContext.request.contextPath}/checkout/orders">Xem đơn hàng của tôi</a>
+    </div>
+
     <c:choose>
         <c:when test="${empty items}">
             <p class="empty-state">Bạn chưa có món nào để thanh toán.</p>
         </c:when>
 
         <c:otherwise>
+            <c:if test="${not empty checkoutError}">
+                <p class="empty-state" style="margin-bottom: 16px; color: #ee4d2d;">${checkoutError}</p>
+            </c:if>
+            <c:if test="${not empty checkoutSuccess}">
+                <p class="empty-state" style="margin-bottom: 16px; color: #16a34a;">${checkoutSuccess}</p>
+            </c:if>
+            <form id="checkoutForm" action="${pageContext.request.contextPath}/checkout/place-order" method="post">
 
             <!-- Danh sách món -->
             <div class="checkout-list">
@@ -44,19 +55,19 @@
 
                 <div class="form-group">
                     <label>Họ và tên</label>
-                    <input type="text" id="fullName">
+                    <input type="text" id="fullName" name="fullName" value="${sessionScope.currentUser.fullName}">
                     <small class="error-msg"></small>
                 </div>
 
                 <div class="form-group">
                     <label>Số điện thoại</label>
-                    <input type="text" id="phone">
+                    <input type="text" id="phone" name="phone" value="${sessionScope.currentUser.phone}">
                     <small class="error-msg"></small>
                 </div>
 
                 <div class="form-group">
                     <label>Địa chỉ nhận hàng</label>
-                    <input type="text" id="address">
+                    <input type="text" id="address" name="address">
                     <small class="error-msg"></small>
                 </div>
             </div>
@@ -88,6 +99,7 @@
                     Xác nhận thanh toán
                 </button>
             </div>
+            </form>
 
         </c:otherwise>
     </c:choose>
@@ -129,8 +141,7 @@
         }
 
         if (isValid) {
-            alert("Đã xác nhận đơn hàng thành công!");
-            window.location.replace("<c:url value='/'/>");
+            document.getElementById("checkoutForm").submit();
         }
     };
 
