@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Chi tiet mon an</title>
+    <title>Chi tết món ăn</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="<c:url value='/css/home.css'/>">
@@ -38,23 +38,23 @@
                     <div class="d-flex flex-wrap gap-2 mt-4">
                         <c:if test="${isOwner}">
                             <a class="btn btn-outline-secondary" href="<c:url value='/shops/foods/edit/${food.id}'/>">
-                                <i class="fa-solid fa-pen"></i> Sua mon
+                                <i class="fa-solid fa-pen"></i> Sửa món
                             </a>
                             <a class="btn btn-outline-danger" href="<c:url value='/shops/foods/delete/${food.id}'/>"
                                onclick="return confirm('Ban chac chan muon xoa mon nay?')">
-                                <i class="fa-solid fa-trash"></i> Xoa mon
+                                <i class="fa-solid fa-trash"></i> Xóa món
                             </a>
                             <a class="btn btn-primary" href="<c:url value='/shops/foods'/>">
-                                <i class="fa-solid fa-arrow-left"></i> Ve danh sach mon
+                                <i class="fa-solid fa-arrow-left"></i> Về danh sách món
                             </a>
                         </c:if>
 
                         <c:if test="${not isOwner}">
                             <a class="btn btn-primary" href="<c:url value='/foods/detail/${food.id}'/>">
-                                <i class="fa-solid fa-cart-shopping"></i> Dat mon ngay
+                                <i class="fa-solid fa-cart-shopping"></i> Đặt món
                             </a>
                             <a class="btn btn-outline-secondary" href="<c:url value='/'/>">
-                                <i class="fa-solid fa-arrow-left"></i> Quay lai
+                                <i class="fa-solid fa-arrow-left"></i> Quay lại
                             </a>
                         </c:if>
                     </div>

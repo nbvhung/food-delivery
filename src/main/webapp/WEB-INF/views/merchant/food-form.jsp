@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><c:choose><c:when test="${empty food.id}">Them mon an</c:when><c:otherwise>Chinh sua mon an</c:otherwise></c:choose></title>
+    <title><c:choose><c:when test="${empty food.id}">Thêm món ăn</c:when><c:otherwise>Chỉnh sửa món ăn</c:otherwise></c:choose></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="<c:url value='/css/home.css'/>">
@@ -27,8 +27,8 @@
         <div class="card-body p-4 p-md-5">
             <h3 class="mb-4" style="color:#ee4d2d;">
                 <c:choose>
-                    <c:when test="${empty food.id}">Them mon an moi</c:when>
-                    <c:otherwise>Cap nhat mon an</c:otherwise>
+                    <c:when test="${empty food.id}">Thêm món mới</c:when>
+                    <c:otherwise> Cập nhật món</c:otherwise>
                 </c:choose>
             </h3>
 
@@ -38,19 +38,19 @@
 
             <form action="${formAction}" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Ten mon</label>
+                    <label class="form-label fw-semibold">Tên món</label>
                     <input type="text" class="form-control" name="name" value="${food.name}" required>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Gia (VND)</label>
+                    <label class="form-label fw-semibold">Giá (VND)</label>
                     <input type="number" min="1000" step="1000" class="form-control" name="price" value="${food.price}" required>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Danh muc</label>
+                    <label class="form-label fw-semibold">Danh mục</label>
                     <select class="form-select" name="categoryId" required>
-                        <option value="">-- Chon danh muc --</option>
+                        <option value="">-- Chọn danh mục --</option>
                         <c:forEach items="${categories}" var="cate">
                             <option value="${cate.id}" ${food.category != null && food.category.id == cate.id ? 'selected' : ''}>
                                 ${cate.name}
@@ -60,18 +60,18 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Mo ta ngan</label>
+                    <label class="form-label fw-semibold"> Mô tả</label>
                     <textarea class="form-control" name="description" rows="4">${food.description}</textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Hinh anh mon an</label>
+                    <label class="form-label fw-semibold"> Hình ảnh</label>
                     <input type="file" class="form-control" name="imageFile" accept="image/*">
                 </div>
 
                 <c:if test="${not empty food.image}">
                     <div class="mb-3">
-                        <div class="text-muted small mb-2">Anh hien tai</div>
+                        <div class="text-muted small mb-2">Ảnh hiện tại</div>
                         <img src="${pageContext.request.contextPath}${food.image}" alt="${food.name}"
                              style="width: 220px; max-width: 100%; border-radius: 10px; border: 1px solid #ececec;"
                              onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=No+Image';">
@@ -80,10 +80,10 @@
 
                 <div class="d-flex flex-wrap gap-2 pt-2">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fa-solid fa-floppy-disk"></i> Luu
+                        <i class="fa-solid fa-floppy-disk"></i> Lưu
                     </button>
                     <a href="<c:url value='/shops/foods'/>" class="btn btn-outline-secondary">
-                        <i class="fa-solid fa-arrow-left"></i> Quay lai
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại
                     </a>
                 </div>
             </form>

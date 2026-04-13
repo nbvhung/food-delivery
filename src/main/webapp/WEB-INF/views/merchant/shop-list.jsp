@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Danh sach cua hang</title>
+    <title>Danh sách cửa hàng</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="<c:url value='/css/home.css'/>">
@@ -54,17 +54,17 @@
 
 <div class="container py-4">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-        <h2 class="m-0" style="color: #ee4d2d; font-size: 28px;">Danh sach cua hang</h2>
+        <h2 class="m-0" style="color: #ee4d2d; font-size: 28px;">Danh sách cửa hàng</h2>
 
         <div class="d-flex gap-2">
             <c:if test="${not empty sessionScope.currentUser and sessionScope.currentUser.role == 'MERCHANT'}">
                 <a class="btn btn-outline-primary" href="<c:url value='/shops/my-shop'/>">
-                    <i class="fa-solid fa-store"></i> Quan cua toi
+                    <i class="fa-solid fa-store"></i> Quán của tôi
                 </a>
             </c:if>
             <c:if test="${not empty sessionScope.currentUser and sessionScope.currentUser.role != 'MERCHANT'}">
                 <a class="btn btn-primary" href="<c:url value='/shops/register'/>">
-                    <i class="fa-solid fa-shop"></i> Dang ky mo quan
+                    <i class="fa-solid fa-shop"></i> Đăng kí mở quán
                 </a>
             </c:if>
         </div>
@@ -79,7 +79,7 @@
 
     <c:choose>
         <c:when test="${empty shops}">
-            <div class="alert alert-secondary mb-0">Chua co cua hang nao dang hoat dong.</div>
+            <div class="alert alert-secondary mb-0">Chưa có cửa hàng nào đang hoạt động</div>
         </c:when>
         <c:otherwise>
             <div class="row g-3">
@@ -105,11 +105,11 @@
 <c:if test="${not empty message and message == 'pending'}">
     <script>
         Swal.fire({
-            title: 'Dang ky thanh cong',
-            text: 'Yeu cau mo quan cua ban da duoc gui va dang cho duyet.',
+            title: 'Đăng kí thành công',
+            text: 'Yêu cầu mở quán đã được gửi',
             icon: 'success',
             confirmButtonColor: '#0d6efd',
-            confirmButtonText: 'Dong y'
+            confirmButtonText: 'Đồng ý'
         });
     </script>
 </c:if>

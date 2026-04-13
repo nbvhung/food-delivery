@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Dang ky cua hang</title>
+    <title>Đăng kí cửa hàng</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="<c:url value='/css/home.css'/>">
@@ -40,7 +40,7 @@
             <div class="register-card card">
                 <div class="card-body p-4 p-md-5">
                     <h4 class="fw-bold mb-4" style="color:#ee4d2d;">
-                        <i class="fa-solid fa-shop me-2"></i>Dang ky cua hang moi
+                        <i class="fa-solid fa-shop me-2"></i>Đăng kí cửa hàng mới
                     </h4>
 
                     <c:if test="${not empty error}">
@@ -52,29 +52,29 @@
 
                     <form action="<c:url value='/shops/register'/>" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Ten cua hang</label>
+                            <label class="form-label fw-semibold">Tên cửa hàng</label>
                             <input type="text" name="name" class="form-control" placeholder="Nhap ten cua hang" required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Dia chi</label>
+                            <label class="form-label fw-semibold">Địa chỉ</label>
                             <textarea name="address" class="form-control" rows="3" placeholder="So nha, duong, phuong/xa..." required></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Hinh anh dai dien</label>
+                            <label class="form-label fw-semibold">Hình ảnh</label>
                             <input type="file" name="imageFile" class="form-control" id="shopImage" accept="image/*" required>
 
                             <div class="image-preview-container" id="previewBox">
                                 <i class="fas fa-image fa-2x text-muted mb-2 d-block" id="placeholderIcon"></i>
-                                <span class="text-muted d-block" id="placeholderText">Chua co tep nao duoc chon</span>
+                                <span class="text-muted d-block" id="placeholderText"> Chưa có tệp nào được chọn</span>
                                 <img id="imgPreview" src="#" alt="Preview">
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-end gap-2 mt-4">
-                            <a href="<c:url value='/shops'/>" class="btn btn-light border">Huy</a>
-                            <button type="submit" class="btn btn-primary">Gui yeu cau xet duyet</button>
+                            <a href="<c:url value='/shops'/>" class="btn btn-light border">Hủy</a>
+                            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
                         </div>
                     </form>
                 </div>

@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Chi tiet cua hang</title>
+    <title>Chi tiết cửa hàng</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="<c:url value='/css/home.css'/>">
@@ -78,13 +78,13 @@
                 <c:if test="${isOwner}">
                     <div class="d-flex flex-wrap gap-2">
                         <a href="<c:url value='/shops/edit'/>" class="btn btn-outline-secondary">
-                            <i class="fa-solid fa-pen"></i> Sua thong tin quan
+                            <i class="fa-solid fa-pen"></i> Chỉnh sửa thông tin
                         </a>
                         <a href="<c:url value='/shops/foods'/>" class="btn btn-primary">
-                            <i class="fa-solid fa-utensils"></i> Quan ly mon
+                            <i class="fa-solid fa-utensils"></i> Quản lý món ăn
                         </a>
                         <a href="<c:url value='/shops/foods/create'/>" class="btn btn-success">
-                            <i class="fa-solid fa-plus"></i> Them mon moi
+                            <i class="fa-solid fa-plus"></i> Thêm món mới
                         </a>
                         <a href="<c:url value='/shops/revenue'/>" class="btn btn-dark">
                             <i class="fa-solid fa-chart-line"></i> Doanh thu
@@ -96,10 +96,10 @@
     </div>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="m-0">Danh sach mon an</h4>
+        <h4 class="m-0">Danh sách món ăn</h4>
         <c:if test="${isOwner}">
             <a href="<c:url value='/shops/foods/create'/>" class="btn btn-sm btn-primary">
-                <i class="fa-solid fa-plus"></i> Them mon
+                <i class="fa-solid fa-plus"></i> Thêm món
             </a>
         </c:if>
     </div>
@@ -107,7 +107,7 @@
     <c:choose>
         <c:when test="${empty foods}">
             <div class="alert alert-secondary mb-0">
-                Cua hang chua co mon an nao.
+                Cửa hàng chưa có món ăn nào
             </div>
         </c:when>
         <c:otherwise>
@@ -129,11 +129,11 @@
 
                                 <div class="d-flex gap-2 mt-3">
                                     <c:if test="${isOwner}">
-                                        <a class="btn btn-sm btn-outline-primary" href="<c:url value='/shops/foods/${food.id}'/>">Chi tiet</a>
-                                        <a class="btn btn-sm btn-outline-secondary" href="<c:url value='/shops/foods/edit/${food.id}'/>">Sua</a>
+                                        <a class="btn btn-sm btn-outline-primary" href="<c:url value='/shops/foods/${food.id}'/>">Chi tiết</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="<c:url value='/shops/foods/edit/${food.id}'/>">Sửa</a>
                                     </c:if>
                                     <c:if test="${not isOwner}">
-                                        <a class="btn btn-sm btn-primary" href="<c:url value='/foods/detail/${food.id}'/>">Dat mon</a>
+                                        <a class="btn btn-sm btn-primary" href="<c:url value='/foods/detail/${food.id}'/>">Đặt món</a>
                                     </c:if>
                                 </div>
                             </div>

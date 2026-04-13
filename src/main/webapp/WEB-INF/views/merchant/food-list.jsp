@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Quan ly mon an</title>
+    <title>Quản lý món ăn </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="<c:url value='/css/home.css'/>">
@@ -17,16 +17,16 @@
 <div class="container py-4">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
         <div>
-            <h3 class="m-0" style="color:#ee4d2d;">Quan ly mon an</h3>
-            <div class="text-secondary small">Cua hang: ${shop.name}</div>
+            <h3 class="m-0" style="color:#ee4d2d;">Quản lý món ăn</h3>
+            <div class="text-secondary small">Cửa hàng: ${shop.name}</div>
         </div>
 
         <div class="d-flex gap-2">
             <a class="btn btn-primary" href="<c:url value='/shops/foods/create'/>">
-                <i class="fa-solid fa-plus"></i> Them mon
+                <i class="fa-solid fa-plus"></i> Thêm món
             </a>
             <a class="btn btn-outline-secondary" href="<c:url value='/shops/my-shop'/>">
-                <i class="fa-solid fa-store"></i> Ve cua hang
+                <i class="fa-solid fa-store"></i> Về cửa hàng
             </a>
         </div>
     </div>
@@ -44,11 +44,11 @@
                 <thead class="table-light">
                     <tr>
                         <th style="width: 72px;">ID</th>
-                        <th style="width: 120px;">Anh</th>
+                        <th style="width: 120px;">Ảnh</th>
                         <th>Mon an</th>
-                        <th style="width: 160px;">Gia</th>
-                        <th style="width: 160px;">Danh muc</th>
-                        <th style="width: 180px;" class="text-center">Hanh dong</th>
+                        <th style="width: 160px;">Giá</th>
+                        <th style="width: 160px;">Danh mục</th>
+                        <th style="width: 180px;" class="text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,7 +78,7 @@
                                     </a>
                                     <a class="btn btn-sm btn-outline-danger"
                                        href="<c:url value='/shops/foods/delete/${food.id}'/>"
-                                       onclick="return confirm('Ban chac chan muon xoa mon nay?')">
+                                       onclick="return confirm('Bạn muốn xóa món này?')">
                                         <i class="fa-solid fa-trash"></i>
                                     </a>
                                 </div>
@@ -89,7 +89,7 @@
                     <c:if test="${empty foods}">
                         <tr>
                             <td colspan="6" class="text-center py-4 text-secondary">
-                                Chua co mon an nao. Hay them mon dau tien cho cua hang.
+                                Chưa có món ăn nào
                             </td>
                         </tr>
                     </c:if>

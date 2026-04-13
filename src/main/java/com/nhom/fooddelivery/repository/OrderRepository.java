@@ -12,11 +12,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Long countByStatus(String status);
 
-    // Tính tổng doanh thu trọn đời của shop
+    // Tính tổng doanh thu
     @Query("SELECT COALESCE(SUM(o.totalPrice), 0) FROM Order o WHERE o.shop.id = :shopId AND o.status = 'DELIVERED'")
     Double getTotalRevenue(@Param("shopId") Long shopId);
 
-    // Tính doanh thu trong tháng hiện tại
+    // Tính doanh thu trong tháng
     @Query("SELECT COALESCE(SUM(o.totalPrice), 0) FROM Order o " +
            "WHERE o.shop.id = :shopId " +
            "AND o.status = 'DELIVERED' " +
