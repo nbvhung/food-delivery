@@ -1,6 +1,9 @@
 package com.nhom.fooddelivery.controller;
 
+import com.nhom.fooddelivery.constant.UserRole;
+import com.nhom.fooddelivery.entity.Shop;
 import com.nhom.fooddelivery.entity.User;
+import com.nhom.fooddelivery.repository.ShopRepository;
 import com.nhom.fooddelivery.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +25,21 @@ public class ProfileController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ShopRepository shopRepository;
+
     @GetMapping
     public String showProfile(HttpSession session, Model model) {
         User currentUser = (User) session.getAttribute("currentUser");
         if (currentUser == null) return "redirect:/login";
 
         model.addAttribute("user", currentUser);
+
+        if (currentUser.getRole() == UserRole.MERCHANT) {
+            Shop merchantShop = shopRepository.findByOwnerId(currentUser.getId());
+            model.addAttribute("merchantShop", merchantShop);
+        }
+
         return "user/profile";
     }
 

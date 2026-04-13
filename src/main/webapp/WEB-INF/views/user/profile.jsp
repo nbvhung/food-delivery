@@ -59,6 +59,60 @@
                 </form>
             </div>
         </div>
+
+        <c:if test="${sessionScope.currentUser.role == 'MERCHANT'}">
+            <div class="card shadow-sm border-0 rounded-4 mt-4">
+                <div class="card-header text-white text-center py-3 rounded-top-4" style="background-color: #1f2937;">
+                    <h5 class="mb-0"><i class="fas fa-store me-2"></i> Thông tin cửa hàng</h5>
+                </div>
+                <div class="card-body p-4">
+                    <c:choose>
+                        <c:when test="${not empty merchantShop}">
+                            <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center">
+                                <img src="${pageContext.request.contextPath}${merchantShop.image}"
+                                     alt="${merchantShop.name}"
+                                     style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; border: 1px solid #eee;"
+                                     onerror="this.onerror=null;this.src='https://via.placeholder.com/240x240?text=No+Image';">
+                                <div class="flex-grow-1">
+                                    <h5 class="mb-1">${merchantShop.name}</h5>
+                                    <p class="text-muted mb-1"><i class="fas fa-location-dot me-1"></i>${merchantShop.address}</p>
+                                    <span class="badge ${merchantShop.status == 'ACTIVE' ? 'bg-success' : (merchantShop.status == 'PENDING' ? 'bg-warning text-dark' : 'bg-danger')}">
+                                        ${merchantShop.status}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-2 mt-4">
+                                <a class="btn btn-outline-secondary" href="${pageContext.request.contextPath}/shops/my-shop">
+                                    <i class="fas fa-store me-1"></i> Xem cửa hàng
+                                </a>
+                                <a class="btn btn-primary" href="${pageContext.request.contextPath}/shops/edit">
+                                    <i class="fas fa-pen me-1"></i> Sửa quán
+                                </a>
+                                <a class="btn btn-dark" href="${pageContext.request.contextPath}/shops/foods">
+                                    <i class="fas fa-utensils me-1"></i> Quản lý món
+                                </a>
+                                <a class="btn btn-success" href="${pageContext.request.contextPath}/shops/foods/create">
+                                    <i class="fas fa-plus me-1"></i> Thêm món
+                                </a>
+                                <a class="btn btn-warning text-dark" href="${pageContext.request.contextPath}/shops/revenue">
+                                    <i class="fas fa-chart-line me-1"></i> Doanh thu
+                                </a>
+                            </div>
+                        </c:when>
+
+                        <c:otherwise>
+                            <div class="alert alert-warning mb-3">
+                                Tài khoản Merchant chưa có cửa hàng.
+                            </div>
+                            <a class="btn btn-primary" href="${pageContext.request.contextPath}/shops/register">
+                                <i class="fas fa-shop me-1"></i> Đăng ký mở cửa hàng
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+        </c:if>
     </div>
 </div>
 
