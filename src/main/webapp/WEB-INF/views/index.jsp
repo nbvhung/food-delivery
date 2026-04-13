@@ -8,8 +8,7 @@
     <meta charset="UTF-8">
     <title>Trang chủ Mạnh Mall</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="<c:url value='/css/home.css?v=2'/>">
-    <link rel="stylesheet" href="<c:url value='/css/home.css'/>">
+    <link rel="stylesheet" href="<c:url value='/css/home.css?v=3'/>">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body style="background-color: #f5f5f5;"> <jsp:include page="/WEB-INF/views/layout/Header.jsp" />
@@ -19,11 +18,28 @@
 
         <aside class="sidebar">
             <h3 class="filter-title"><i class="fas fa-list"></i> Danh mục</h3>
-            <ul class="cat-list">
-                <li><a href="?categoryId=1">Cơm Gà</a></li>
-                <li><a href="?categoryId=2">Trà Sữa</a></li>
-                <li><a href="?categoryId=3">Bánh Mì</a></li>
-                <li style="border-top: 1px dashed #ddd;"><a href="${pageContext.request.contextPath}/">Tất cả món ăn</a></li>
+            <ul class="cat-list" style="list-style-type: none; padding-left: 0;">
+                <c:forEach items="${categories}" var="cat">
+                    <li class="mb-2">
+                        <a href="?categoryId=${cat.id}"
+                           class="text-decoration-none ${categoryId == cat.id ? 'fw-bold text-primary' : 'text-dark'}">
+                            ${cat.name}
+                        </a>
+                    </li>
+                </c:forEach>
+
+                <li class="mt-3 pt-3" style="border-top: 1px dashed #ddd;">
+                    <a href="${pageContext.request.contextPath}/"
+                       class="text-decoration-none ${categoryId == null ? 'fw-bold text-primary' : 'text-dark'}">
+                        Tất cả món ăn
+                    </a>
+                </li>
+
+                <li class="mt-2 pt-2" style="border-top: 1px solid #f0f0f0;">
+                    <a href="${pageContext.request.contextPath}/shops" class="text-decoration-none text-success fw-bold">
+                        Danh sách Cửa hàng
+                    </a>
+                </li>
             </ul>
             <div class="price-range-filter" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
                     <h3 class="filter-title" style="font-size: 16px; margin-bottom: 15px;">Khoảng Giá</h3>

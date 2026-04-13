@@ -1,6 +1,8 @@
 package com.nhom.fooddelivery.controller;
 
 import com.nhom.fooddelivery.entity.Food;
+import com.nhom.fooddelivery.entity.Category;
+import com.nhom.fooddelivery.repository.CategoryRepository;
 import com.nhom.fooddelivery.repository.FoodRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -22,6 +25,9 @@ public class HomeController {
 
     @Autowired
     private FoodRepository foodRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private ResourceLoader resourceLoader;
@@ -65,6 +71,9 @@ public class HomeController {
         else {
             foodPage = foodRepository.findAll(pageable);
         }
+
+        List<Category> categories = categoryRepository.findAll();
+        model.addAttribute("categories", categories);
 
         model.addAttribute("keyword", keyword); // Nhớ dòng này để giữ chữ trong ô Search
 
