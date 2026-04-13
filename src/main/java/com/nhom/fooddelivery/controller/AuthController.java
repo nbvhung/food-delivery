@@ -41,14 +41,23 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@ModelAttribute User user, Model model) {
 
-        // kiểm tra username tồn tại
+        // Kiểm tra username tồn tại
         if (userRepo.findByUsername(user.getUsername()) != null) {
-            model.addAttribute("error", "Tên người dùng đã tồn tại!");
+            model.addAttribute("error", "Tên đăng nhập đã tồn tại!");
+            model.addAttribute("user", user); // Giữ lại thông tin user đã nhập
             return "auth/register";
         }
 
-        // mặc định role customer
+        //  Kiểm tra số điện thoại tồn tại
+        if (userRepo.findByPhone(user.getPhone()) != null) {
+            model.addAttribute("error", "Số điện thoại này đã được đăng ký!");
+            model.addAttribute("user", user); // Giữ lại thông tin user đã nhập
+            return "auth/register";
+        }
+
+        // Mặc định role customer
         user.setRole(UserRole.CUSTOMER);
+        user.setStatus("ACTIVED");
 
         userRepo.save(user);
 

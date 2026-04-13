@@ -17,13 +17,16 @@
 
         <form action="${pageContext.request.contextPath}/register" method="post">
             <div class="input-group">
-                <input type="text" name="username" placeholder="Tên đăng ký" required>
+                <input type="text" name="username" placeholder="Tên đăng ký" value="${user.username}" required>
+            </div>
+            <div class="input-group">
+                <input type="text" name="fullName" placeholder="Họ và tên của bạn" value="${user.fullName}" required>
+            </div>
+            <div class="input-group">
+                <input type="text" name="phone" placeholder="Số điện thoại" value="${user.phone}" required>
             </div>
             <div class="input-group">
                 <input type="password" name="password" placeholder="Mật khẩu" required>
-            </div>
-            <div class="input-group">
-                <input type="text" name="fullName" placeholder="Họ và tên của bạn" required>
             </div>
 
             <c:if test="${not empty error}">
