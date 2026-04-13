@@ -28,18 +28,14 @@ public class FoodController {
     private UserRepository userRepository;
 
 
-    // =======================
-    // Format tiền VNĐ
-    // =======================
+
     private String formatPrice(Number price) {
         NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
         return nf.format(price);
     }
 
 
-    // =======================
-    // 1️⃣ Danh sách food
-    // =======================
+
     @GetMapping
     public String listFoods(Model model) {
 
@@ -55,9 +51,6 @@ public class FoodController {
     }
 
 
-    // =======================
-    // 2️⃣ Chi tiết food
-    // =======================
     @GetMapping("/{id}")
     public String foodDetail(@PathVariable Long id, Model model) {
 
@@ -75,9 +68,6 @@ public class FoodController {
     }
 
 
-    // =======================
-    // 3️⃣ Form tạo food (Redirect to shops)
-    // =======================
     @GetMapping("/create")
     public String showCreateForm(HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
@@ -88,9 +78,7 @@ public class FoodController {
     }
 
 
-    // =======================
-    // 4️⃣ Lưu food (Redirect to shops)
-    // =======================
+
     @PostMapping("/save")
     public String saveFood(HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
@@ -100,9 +88,7 @@ public class FoodController {
         return "redirect:/shops/foods/save";
     }
 
-    // =======================
-    // 5️⃣ Form sửa food (Redirect to shops)
-    // =======================
+
     @GetMapping("/edit/{id}")
     public String editFood(@PathVariable Long id, HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
@@ -113,9 +99,7 @@ public class FoodController {
     }
 
 
-    // =======================
-    // 6️⃣ Xóa food (Redirect to shops)
-    // =======================
+
     @GetMapping("/delete/{id}")
     public String deleteFood(@PathVariable Long id, HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
@@ -125,10 +109,6 @@ public class FoodController {
         return "redirect:/shops/foods/delete/" + id;
     }
 
-
-    // =======================
-    // 7️⃣ API JSON test
-    // =======================
     @GetMapping("/api")
     @ResponseBody
     public List<Food> getFoodsJson() {
