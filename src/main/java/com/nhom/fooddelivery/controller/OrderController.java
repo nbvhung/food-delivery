@@ -32,6 +32,28 @@ public class OrderController {
         Order order = orderRepository.findById(orderId).orElse(null);
         if (order != null && "READY".equals(order.getStatus())) {
             order.setShipper(currentUser);
+            order.setStatus("ACCEPTED");
+            orderRepository.save(order);
+        }
+
+        return "redirect:/shipper/waiting";
+    }
+
+    @PostMapping("/pickup")
+    public String pickupOrder(
+            @RequestParam Long orderId,
+            HttpSession session
+    ) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null || currentUser.getRole() != SHIPPER) {
+            return "redirect:/login";
+        }
+
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order != null
+                && "ACCEPTED".equals(order.getStatus())
+                && order.getShipper() != null
+                && currentUser.getId().equals(order.getShipper().getId())) {
             order.setStatus("SHIPPING");
             orderRepository.save(order);
         }

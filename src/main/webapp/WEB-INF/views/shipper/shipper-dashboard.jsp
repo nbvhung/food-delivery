@@ -78,6 +78,20 @@
                         </span>
                     </div>
 
+                    <div class="detail-item">
+                        <i class="fas fa-screwdriver-wrench"></i>
+                        <span>
+                            <c:choose>
+                                <c:when test="${not empty shipperProfile.vehicleType}">
+                                    ${shipperProfile.vehicleType}
+                                </c:when>
+                                <c:otherwise>
+                                    Chưa cập nhật loại xe
+                                </c:otherwise>
+                            </c:choose>
+                        </span>
+                    </div>
+
                     <div class="detail-item" style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4);">
                         <i class="fas fa-circle" style="color: #10b981; font-size: 12px;"></i>
                         <span style="color: #fff;">Đang hoạt động</span>

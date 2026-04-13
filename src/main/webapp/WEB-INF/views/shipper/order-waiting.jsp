@@ -16,7 +16,7 @@
 <div class="shipper-container">
     <div class="shipper-header">
         <div>
-            <h2>Đơn hàng đang chờ Shipper nhận</h2>
+            <h2>Đơn hàng đang chờ nhận</h2>
             <span class="shipper-badge">READY</span>
         </div>
         <nav class="shipper-nav">
@@ -46,11 +46,11 @@
                     <thead>
                     <tr>
                         <th>Mã đơn</th>
-                        <th>Khách hàng</th>
-                        <th>Quán</th>
+                        <th>Tên quán</th>
+                        <th>Địa chỉ quán</th>
+                        <th>Tên đơn</th>
                         <th>Địa chỉ giao</th>
-                        <th>Liên hệ</th>
-                        <th>Tổng tiền</th>
+                        <th>Tổng giá trị đơn</th>
                         <th>Hành động</th>
                     </tr>
                     </thead>
@@ -58,18 +58,42 @@
                     <c:forEach items="${orders}" var="order">
                         <tr>
                             <td>#${order.id}</td>
-                            <td>${order.customer.fullName}</td>
                             <td>${order.shop.name}</td>
-                            <td>${order.address}</td>
-                            <td>${order.phone}</td>
-                            <td><fmt:formatNumber value="${order.totalPrice}" type="number" groupingUsed="true" maxFractionDigits="0"/> đ</td>
+                            <td>${order.shop.address}</td>
                             <td>
-                                <form action="${pageContext.request.contextPath}/orders/accept" method="post">
-                                    <input type="hidden" name="orderId" value="${order.id}" />
-                                    <button type="submit" class="shipper-action">
-                                        <i class="fas fa-motorcycle"></i> Nhận giao
-                                    </button>
-                                </form>
+                                <c:choose>
+                                    <c:when test="${not empty orderFoodSummary[order.id]}">
+                                        ${orderFoodSummary[order.id]}
+                                    </c:when>
+                                    <c:otherwise>
+                                        Chưa có dữ liệu món ăn
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>${order.address}</td>
+                            <td>
+                                <fmt:formatNumber value="${order.totalPrice}" type="number" groupingUsed="true" maxFractionDigits="0"/> đ
+                            </td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${order.status == 'READY'}">
+                                        <form action="${pageContext.request.contextPath}/orders/accept" method="post">
+                                            <input type="hidden" name="orderId" value="${order.id}" />
+                                            <button type="submit" class="shipper-action">
+                                                <i class="fas fa-handshake"></i> Nhận đơn
+                                            </button>
+                                        </form>
+                                    </c:when>
+
+                                    <c:when test="${order.status == 'ACCEPTED'}">
+                                        <form action="${pageContext.request.contextPath}/orders/pickup" method="post">
+                                            <input type="hidden" name="orderId" value="${order.id}" />
+                                            <button type="submit" class="shipper-action secondary">
+                                                <i class="fas fa-box-open"></i> Đã lấy hàng
+                                            </button>
+                                        </form>
+                                    </c:when>
+                                </c:choose>
                             </td>
                         </tr>
                     </c:forEach>

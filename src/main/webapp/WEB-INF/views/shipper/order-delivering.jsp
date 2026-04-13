@@ -49,7 +49,7 @@
             <th>Khách hàng</th>
             <th>Địa chỉ giao</th>
             <th>Liên hệ</th>
-            <th>Tổng tiền</th>
+            <th>Tổng giá trị đơn</th>
             <th>Trạng thái</th>
             <th>Hành động</th>
           </tr>
