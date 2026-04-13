@@ -14,6 +14,12 @@
 
 <div class="container cart-container">
     <h2>Giỏ hàng của bạn</h2>
+    <c:if test="${not empty checkoutSuccess}">
+        <p class="empty-state" style="margin-bottom: 16px; color: #16a34a;">${checkoutSuccess}</p>
+    </c:if>
+    <c:if test="${not empty checkoutError}">
+        <p class="empty-state" style="margin-bottom: 16px; color: #ee4d2d;">${checkoutError}</p>
+    </c:if>
 
     <c:choose>
         <c:when test="${empty items}">
@@ -71,6 +77,7 @@
                 <strong>${total}đ</strong>
             </div>
             <div class="cart-actions">
+                <a class="btn-primary" style="margin-right: 12px;" href="${pageContext.request.contextPath}/checkout/orders">Đơn hàng của tôi</a>
                 <a class="btn-primary" href="${pageContext.request.contextPath}/checkout">Thanh toán</a>
             </div>
         </c:otherwise>

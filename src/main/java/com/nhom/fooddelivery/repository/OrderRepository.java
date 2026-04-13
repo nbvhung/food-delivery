@@ -10,6 +10,20 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // Tìm các đơn hàng đang chờ Shipper đến nhận (Quán đã làm xong)
     List<Order> findByStatus(String status);
 
+    List<Order> findByCustomerIdOrderByCreatedAtDesc(Long customerId);
+
+    @Query("""
+            SELECT DISTINCT o
+            FROM Order o
+            LEFT JOIN FETCH o.shop
+            LEFT JOIN FETCH o.shipper
+            LEFT JOIN FETCH o.orderDetails od
+            LEFT JOIN FETCH od.food
+            WHERE o.customer.id = :customerId
+            ORDER BY o.createdAt DESC
+            """)
+    List<Order> findOrderHistoryByCustomerId(@Param("customerId") Long customerId);
+
     Long countByStatus(String status);
 
     // Tìm các đơn mà Shipper cụ thể đang đi giao
