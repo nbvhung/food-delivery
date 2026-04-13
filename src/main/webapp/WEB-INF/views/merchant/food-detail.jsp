@@ -1,31 +1,70 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Chi tiết món ăn</title>
-    <link rel="stylesheet" href="/css/food.css">
+    <meta charset="UTF-8">
+    <title>Chi tiet mon an</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="<c:url value='/css/home.css'/>">
 </head>
-<body>
+<body style="background-color: #f5f5f5;">
 
-<h2>🍽️ CHI TIẾT MÓN ĂN</h2>
+<jsp:include page="/WEB-INF/views/layout/Header.jsp" />
 
-<p><b>ID:</b> ${food.id}</p>
-<p><b>Tên món:</b> ${food.name}</p>
-<p><b>Giá:</b> ${food.priceFormatted}</p>
+<c:set var="isOwner" value="${not empty sessionScope.currentUser and sessionScope.currentUser.role == 'MERCHANT' and not empty food.shop and not empty food.shop.owner and sessionScope.currentUser.id == food.shop.owner.id}" />
 
-<p><b>Hình ảnh:</b><br>
-    <img src="${pageContext.request.contextPath}${food.image}" width="200">
+<div class="container py-4" style="max-width: 900px;">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="row g-0">
+            <div class="col-12 col-md-5">
+                <img src="${pageContext.request.contextPath}${food.image}" alt="${food.name}"
+                     style="width: 100%; height: 100%; min-height: 320px; object-fit: cover;"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/600x600?text=No+Image';">
+            </div>
+            <div class="col-12 col-md-7">
+                <div class="p-4 p-md-5">
+                    <h3 class="mb-2" style="color:#ee4d2d;">${food.name}</h3>
+                    <div class="mb-3 text-danger fw-bold" style="font-size: 28px;">
+                        <fmt:formatNumber value="${food.price}" type="number" groupingUsed="true"/> đ
+                    </div>
 
-</p>
+                    <p class="mb-2"><span class="text-secondary">Cua hang:</span> ${food.shop.name}</p>
+                    <p class="mb-2"><span class="text-secondary">Danh muc:</span> ${food.category.name}</p>
+                    <p class="mb-0 text-secondary">${food.description}</p>
 
-<p><b>Mô tả:</b> ${food.description}</p>
-<p><b>Shop:</b>
-    <a href="${pageContext.request.contextPath}/shops/${food.shop.id}">${food.shop.name}</a></p>
-<p><b>Danh mục:</b> ${food.category.name}</p>
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <c:if test="${isOwner}">
+                            <a class="btn btn-outline-secondary" href="<c:url value='/shops/foods/edit/${food.id}'/>">
+                                <i class="fa-solid fa-pen"></i> Sua mon
+                            </a>
+                            <a class="btn btn-outline-danger" href="<c:url value='/shops/foods/delete/${food.id}'/>"
+                               onclick="return confirm('Ban chac chan muon xoa mon nay?')">
+                                <i class="fa-solid fa-trash"></i> Xoa mon
+                            </a>
+                            <a class="btn btn-primary" href="<c:url value='/shops/foods'/>">
+                                <i class="fa-solid fa-arrow-left"></i> Ve danh sach mon
+                            </a>
+                        </c:if>
 
-<br>
-<a href="${pageContext.request.contextPath}/foods">⬅ Quay lại danh sách</a>
+                        <c:if test="${not isOwner}">
+                            <a class="btn btn-primary" href="<c:url value='/foods/detail/${food.id}'/>">
+                                <i class="fa-solid fa-cart-shopping"></i> Dat mon ngay
+                            </a>
+                            <a class="btn btn-outline-secondary" href="<c:url value='/'/>">
+                                <i class="fa-solid fa-arrow-left"></i> Quay lai
+                            </a>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<jsp:include page="/WEB-INF/views/layout/Footer.jsp" />
 
 </body>
 </html>

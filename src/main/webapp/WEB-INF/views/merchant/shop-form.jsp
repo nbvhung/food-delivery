@@ -1,34 +1,74 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Shop Edit</title>
-    <link rel="stylesheet" href="/css/shop.css">
+    <meta charset="UTF-8">
+    <title>Cap nhat cua hang</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="<c:url value='/css/home.css'/>">
 </head>
-<body>
+<body style="background-color: #f5f5f5;">
 
-<form action="/shops/update" method="post" enctype="multipart/form-data">
+<jsp:include page="/WEB-INF/views/layout/Header.jsp" />
 
-    <input type="hidden" name="id" value="${shop.id}">
+<div class="container py-4" style="max-width: 760px;">
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4" style="color:#ee4d2d;">Cap nhat thong tin cua hang</h3>
 
-    <label>Tên shop</label>
-    <input type="text" name="name" value="${shop.name}" required>
+            <c:if test="${not empty success}">
+                <div class="alert alert-success">${success}</div>
+            </c:if>
+            <c:if test="${not empty error}">
+                <div class="alert alert-danger">${error}</div>
+            </c:if>
 
-    <label>Địa chỉ</label>
-    <input type="text"  name="address" value="${shop.address}" required>
+            <form action="<c:url value='/shops/update'/>" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="${shop.id}">
 
-    <label>Hình ảnh</label>
-    <input type="file" name="imageFile" accept="image/*">
-    <c:if test="${not empty shop.image}">
-        <img src="${shop.image}" alt="Current Image" style="max-width: 200px;">
-    </c:if>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Ten cua hang</label>
+                    <input type="text" class="form-control" name="name" value="${shop.name}" required>
+                </div>
 
-    <div class="form-actions">
-        <button type="submit">💾 Lưu</button>
-        <a class="btn-back" href="/shops/edit">⬅ Quay lại</a>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Dia chi</label>
+                    <textarea class="form-control" name="address" rows="3" required>${shop.address}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Hinh anh dai dien</label>
+                    <input type="file" class="form-control" name="imageFile" accept="image/*">
+                </div>
+
+                <c:if test="${not empty shop.image}">
+                    <div class="mb-3">
+                        <div class="text-muted small mb-2">Anh hien tai</div>
+                        <img src="${pageContext.request.contextPath}${shop.image}" alt="${shop.name}"
+                             style="width: 220px; max-width: 100%; border-radius: 10px; border: 1px solid #ececec;"
+                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=No+Image';">
+                    </div>
+                </c:if>
+
+                <div class="d-flex flex-wrap gap-2 pt-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Luu thay doi
+                    </button>
+                    <a href="<c:url value='/shops/my-shop'/>" class="btn btn-outline-secondary">
+                        <i class="fa-solid fa-store"></i> Ve cua hang
+                    </a>
+                    <a href="<c:url value='/shops/foods'/>" class="btn btn-outline-dark">
+                        <i class="fa-solid fa-utensils"></i> Quan ly mon an
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
-</form>
+<jsp:include page="/WEB-INF/views/layout/Footer.jsp" />
 
 </body>
 </html>

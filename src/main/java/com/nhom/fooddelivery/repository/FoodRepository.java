@@ -15,6 +15,7 @@ public interface   FoodRepository extends JpaRepository<Food, Long> {
 
     // Lấy tất cả món theo shop
     List<Food> findByShop(Shop shop);
+    List<Food> findByShopOrderByIdDesc(Shop shop);
 
     // Lấy tất cả món theo category
     List<Food> findByCategory(Category category);
