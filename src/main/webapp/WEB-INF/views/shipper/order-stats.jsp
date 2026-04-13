@@ -43,7 +43,7 @@
                 <span class="summary-note">Đơn hàng hoàn tất</span>
             </div>
             <div class="summary-item">
-                <h3>Tổng tiền đã giao</h3>
+                <h3>Tổng giá trị đơn đã giao</h3>
                 <p>${totalEarnings} đ</p>
                 <span class="summary-note">Doanh thu tích lũy</span>
             </div>
@@ -72,7 +72,7 @@
                         <th>ID</th>
                         <th>Địa chỉ</th>
                         <th>Số điện thoại</th>
-                        <th>Tổng tiền</th>
+                        <th>Tổng giá trị đơn</th>
                         <th>Đánh giá</th>
                     </tr>
                     </thead>
