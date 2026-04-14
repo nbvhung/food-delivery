@@ -319,6 +319,11 @@
     color: #0891b2;
 }
 
+.status-ACCEPTED {
+    background: #eef4ff;
+    color: #130e72;
+}
+
 .status-DELIVERED {
     background: #ecfdf5;
     color: #16a34a;
