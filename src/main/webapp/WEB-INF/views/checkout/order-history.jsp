@@ -33,6 +33,7 @@
                             <span class="order-status-badge status-${order.status}">
                                 <c:choose>
                                     <c:when test="${order.status == 'READY'}">Chờ shipper nhận</c:when>
+                                    <c:when test="${order.status == 'ACCEPTED'}">Chấp nhận đơn</c:when>
                                     <c:when test="${order.status == 'SHIPPING'}">Đang giao</c:when>
                                     <c:when test="${order.status == 'DELIVERED'}">Đã giao</c:when>
                                     <c:when test="${order.status == 'CANCELLED'}">Đã hủy</c:when>
@@ -75,6 +76,7 @@
                                 <strong>
                                     <c:choose>
                                         <c:when test="${order.status == 'READY'}">Chờ shipper nhận</c:when>
+                                        <c:when test="${order.status == 'ACCEPTED'}">Chấp nhận đơn</c:when>
                                         <c:when test="${order.status == 'SHIPPING'}">Đang giao</c:when>
                                         <c:when test="${order.status == 'DELIVERED'}">Đã giao</c:when>
                                         <c:when test="${order.status == 'CANCELLED'}">Đã hủy</c:when>
